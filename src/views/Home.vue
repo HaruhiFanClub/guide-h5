@@ -63,7 +63,7 @@ const SWIPE_CONFIG = {
   style: 'height: 100vh;',
   loop: true,
   showIndicators: false,
-  initialSwipe: 12
+  initialSwipe: 0
 }
 
 export default defineComponent({
