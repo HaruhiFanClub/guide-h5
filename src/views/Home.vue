@@ -37,9 +37,9 @@
           <group-list :list="groupList" @prev="swipe.prev()" @next="swipe.next()"></group-list>
         </div>
       </van-swipe-item>
-      <van-swipe-item>
+      <van-swipe-item v-for="(item, index) in groupList" :key="index">
         <div class="full-page">
-          <p>每个部门详情</p>
+          <group-detail :info="item" @prev="swipe.prev()" @next="swipe.next()"></group-detail>
         </div>
       </van-swipe-item>
     </van-swipe>
@@ -56,11 +56,12 @@ import { Question } from '@/components/Question'
 import { Result } from '@/components/Result'
 import { ActionBtn } from '@/components/ActionBtn'
 import { GroupList } from '@/components/GroupList'
+import { GroupDetail } from '@/components/GroupDetail'
 
 const SWIPE_CONFIG = {
   vertical: true,
   style: 'height: 100vh;',
-  loop: false,
+  loop: true,
   showIndicators: false,
   initialSwipe: 0
 }
@@ -72,7 +73,8 @@ export default defineComponent({
     Question,
     Result,
     ActionBtn,
-    GroupList
+    GroupList,
+    GroupDetail
   },
   setup () {
     const questionList = QUESTION_LIST.map(item => {
@@ -86,9 +88,16 @@ export default defineComponent({
     const swipe = ref({} as Swipe)
     const groupList = GROUP_LIST.filter(item => !item.top)
     const resultList = ref<TGroup[]>([])
-    const touchable = computed(() => {
-      return !!swipeIndex.value && swipeIndex.value < questionList.length
+    const showResultPrev = ref(false)
+    const showResultNext = ref(false)
+
+    // 是否开启手势翻页
+    const touchable = computed((): boolean => {
+      if (!swipeIndex.value) return false
+      //        问题列表(除最后一题)
+      return (swipeIndex.value < questionList.length)
     })
+    // 翻页结束事件
     const onSwipeChange = (index: number) => {
       swipeIndex.value = index
     }
@@ -127,8 +136,6 @@ export default defineComponent({
       })
       swipe.value.next()
     }
-    const showResultPrev = ref(false)
-    const showResultNext = ref(false)
     return {
       swipe,
       INTRODUCTION_CONFIG,
