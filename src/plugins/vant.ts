@@ -5,7 +5,9 @@ import {
   CheckboxGroup,
   Checkbox,
   RadioGroup,
-  Radio
+  Radio,
+  Step,
+  Steps
 } from 'vant'
 
 export const vantComponents = [
@@ -14,7 +16,9 @@ export const vantComponents = [
   CheckboxGroup,
   Checkbox,
   RadioGroup,
-  Radio
+  Radio,
+  Step,
+  Steps
 ]
 
 export const installVant = (app: App) => {
