@@ -72,7 +72,7 @@ $device-color:  #a8dbe7;
 .device {
   display: flex;
   flex-direction: column;
-  padding: 5vh 10vw;
+  padding: 5% 10vw;
   .device-header,.device-footer {
     width: 100%;
   }
