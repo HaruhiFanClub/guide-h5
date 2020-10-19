@@ -2,18 +2,31 @@
   <div class="device">
     <img :src="deviceHeader" alt="" class="device-header">
     <div class="device-container">
-      <div class="head-bar">{{ config.title }}</div>
-      <div
-        v-for="(item, index) in config.list"
-        :key="index"
-        :class="['chat-item', item.align === 'right' ? 'right' : 'left']">
-        <div class="user-info">
-          <img :src="item.avatar" alt="aratar" class="avatar">
+      <div class="head-bar">
+        <van-icon name="arrow-left" size="25" />
+        <span class="head-tt">{{ config.title }}</span>
+      </div>
+      <div class="chat-container">
+        <div
+          v-for="(item, index) in config.list"
+          :key="index"
+          :class="['chat-item', item.align === 'right' ? 'right' : 'left']">
+          <div class="user-info">
+            <img :src="item.avatar" alt="aratar" class="avatar">
+          </div>
+          <div class="chat-content">
+            <div class="user-name">{{ item.name }}</div>
+            <div class="comment">
+              {{ item.text }}
+            </div>
+          </div>
         </div>
-        <div class="comment">{{ item.text }}</div>
       </div>
       <div class="action-bar">
+        <img :src="wxVoice" alt="wx-icon" class="wx-icon">
         <div class="btn" @click="start">点击开始测试</div>
+        <img :src="wxFace" alt="wx-icon" class="wx-icon">
+        <img :src="wxAdd" alt="wx-icon" class="wx-icon">
       </div>
     </div>
     <img :src="deviceFooter" alt="" class="device-footer">
@@ -24,6 +37,9 @@
 import { defineComponent, PropType } from 'vue'
 import deviceHeader from '@/assets/imgs/header.webp'
 import deviceFooter from '@/assets/imgs/footer.webp'
+import wxAdd from '@/assets/imgs/wx-add.webp'
+import wxFace from '@/assets/imgs/wx-face.webp'
+import wxVoice from '@/assets/imgs/wx-voice.webp'
 import { Introduction } from '@/types'
 
 export default defineComponent({
@@ -37,7 +53,10 @@ export default defineComponent({
   data () {
     return {
       deviceHeader,
-      deviceFooter
+      deviceFooter,
+      wxAdd,
+      wxFace,
+      wxVoice
     }
   },
   methods: {
@@ -53,43 +72,104 @@ $device-color:  #a8dbe7;
 .device {
   display: flex;
   flex-direction: column;
-  padding-top: 5vh;
+  padding: 5vh 10vw;
   .device-header,.device-footer {
     width: 100%;
   }
   .device-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     height: 70vh;
+    padding-bottom: 54px;
     overflow-y: scroll;
     pointer-events: all;
     border-left: 0.45rem solid $device-color;
     border-right: 0.45rem solid $device-color;
-    .head-bar {}
-    .chat-item {
+    .head-bar {
       display: flex;
-      align-items: flex-start;
-      padding: 10px 0;
-      &.left {
-        padding-right: 20px;
+      align-items: center;
+      height: 40px;
+      background-color: #eeeeee;
+      .head-tt {
+        margin-left: 5px;
+        transform: translateY(2px);
       }
-      &.right {
-        flex-direction: row-reverse;
-        padding-left: 20px;
-      }
-      .avatar {
-        width: 2rem;
-        height: 2rem;
+    }
+    .chat-container {
+      flex: 1;
+      height: 100%;
+      overflow-y: scroll;
+      padding: 15px 7px;
+      background-color: #f4f4f4;
+      .chat-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 10px 0;
+        &.left {
+          padding-right: 20px;
+          .chat-content {
+            padding-left: 20px;
+          }
+        }
+        &.right {
+          flex-direction: row-reverse;
+          padding-left: 20px;
+          .chat-content {
+            padding-right: 20px;
+            .user-name {
+              text-align: right;
+            }
+            .comment {
+              background-color: #9de2a6;
+            }
+          }
+        }
+        .avatar {
+          width: 2rem;
+          height: 2rem;
+        }
+        .chat-content {
+          // padding-left: 20px;
+          .user-name {
+            font-size: 80%;
+            color: #c9c9c9;
+          }
+          .comment {
+            padding: 5px 10px;
+            font-size: 80%;
+            color: #464646;
+            background-color: #fff;
+            border-radius: .5rem;
+          }
+        }
       }
     }
     .action-bar {
-      position: sticky;
+      position: absolute;
       bottom: 0;
+      display: flex;
+      align-items: center;
       width: 100%;
+      height: 54px;
       background-color: #eee;
+      .wx-icon {
+        height: 25px;
+        width: 25px;
+        margin: 0 5px;
+      }
       .btn {
-        width: 80%;
+        flex: 1;
+        height: 33px;
+        margin: 0 8px;
+        line-height: 33px;
+        font-size: 0.9em;
+        font-weight: bolder;
         text-align: center;
-        border: 1px solid #fafafa;
-        border-radius: 5px;
+        color: #337ab7;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: rgb(170, 170, 170) 0px 0px 5px;;
       }
     }
   }

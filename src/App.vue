@@ -16,6 +16,9 @@ export default defineComponent({
 
 <style lang="scss">
 #app {
+  margin: 0 auto;
+  // width: 100vw;
+  width: clamp(430px, 100vw, 580px);
   line-height: 1.5em;
 }
 </style>
