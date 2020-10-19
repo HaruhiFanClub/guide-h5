@@ -157,9 +157,9 @@ export default defineComponent({
 <style scoped lang="scss">
 .van-swipe {
   .full-page {
+    position: relative;
     height: 100vh;
     &.q {
-      position: relative;
       padding: 10px 15px;
       .action {
         position: absolute;
@@ -169,7 +169,6 @@ export default defineComponent({
       }
     }
     &.result {
-      position: relative;
       .actions {
         position: absolute;
         bottom: 20%;

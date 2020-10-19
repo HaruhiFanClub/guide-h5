@@ -10,7 +10,7 @@
         <van-radio v-for="(opt, index) in config.options" :key="opt.title" :name="index">{{ opt.title }}</van-radio>
       </van-radio-group>
       <div class="actions">
-        <action-btn @click="emit('prev')">上一题</action-btn>
+        <action-btn v-if="qIndex" @click="emit('prev')">上一题</action-btn>
       </div>
     </div>
   </div>

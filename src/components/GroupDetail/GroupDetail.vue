@@ -65,7 +65,6 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .group-detail {
-  position: relative;
   height: 100%;
   overflow-y: scroll;
   padding: 5px;
@@ -102,7 +101,7 @@ export default defineComponent({
     }
   }
   .actions {
-    position: sticky;
+    position: absolute;
     bottom: 20%;
     display: flex;
     align-items: center;

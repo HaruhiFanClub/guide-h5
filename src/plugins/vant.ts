@@ -7,7 +7,8 @@ import {
   RadioGroup,
   Radio,
   Step,
-  Steps
+  Steps,
+  Icon
 } from 'vant'
 
 export const vantComponents = [
@@ -18,7 +19,8 @@ export const vantComponents = [
   RadioGroup,
   Radio,
   Step,
-  Steps
+  Steps,
+  Icon
 ]
 
 export const installVant = (app: App) => {
