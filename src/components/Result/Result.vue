@@ -78,7 +78,6 @@ $border-radius: 0.3rem;
 .result {
   position: relative;
   height: 100%;
-  overflow-y: scroll;
   padding: 10px;
   .main-recommend {
     position: relative;

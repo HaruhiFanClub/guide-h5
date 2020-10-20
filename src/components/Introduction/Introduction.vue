@@ -70,9 +70,12 @@ export default defineComponent({
 <style scoped lang="scss">
 $device-color:  #a8dbe7;
 .device {
+  position: relative;
+  top: 50%;
   display: flex;
   flex-direction: column;
-  padding: 5% 10vw;
+  padding: 0 10vw;
+  transform: translateY(-50%);
   .device-header,.device-footer {
     width: 100%;
   }
