@@ -23,6 +23,6 @@ html,body,#app {
 }
 #app {
   margin: 0 auto;
-  width: clamp(430px, 100vw, 580px);
+  width: 100vw;
 }
 </style>
