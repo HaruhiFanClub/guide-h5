@@ -1,18 +1,21 @@
 <template>
-  <div class="question-container">
-    <question-header></question-header>
-    <div class="question">
-      <p>{{ qIndex + 1 }}. {{ config.title }}（{{ config.multiple ? '多选' : '单选' }}）</p>
-      <van-checkbox-group v-if="config.multiple" v-model="value" :max="config.max">
-        <van-checkbox v-for="(opt, index) in config.options" :key="opt.title" :name="index">{{ opt.title }}</van-checkbox>
-      </van-checkbox-group>
-      <van-radio-group v-else v-model="value">
-        <van-radio v-for="(opt, index) in config.options" :key="opt.title" :name="index">{{ opt.title }}</van-radio>
-      </van-radio-group>
-      <div class="actions">
-        <action-btn v-if="qIndex" @click="emit('prev')">上一题</action-btn>
+  <div class="full-page">
+    <div class="question-container">
+      <question-header></question-header>
+      <div class="question">
+        <p>{{ qIndex + 1 }}. {{ config.title }}（{{ config.multiple ? '多选' : '单选' }}）</p>
+        <van-checkbox-group v-if="config.multiple" v-model="value" :max="config.max">
+          <van-checkbox v-for="(opt, index) in config.options" :key="opt.title" :name="index">{{ opt.title }}</van-checkbox>
+        </van-checkbox-group>
+        <van-radio-group v-else v-model="value">
+          <van-radio v-for="(opt, index) in config.options" :key="opt.title" :name="index">{{ opt.title }}</van-radio>
+        </van-radio-group>
+        <div class="actions">
+          <action-btn v-if="qIndex" @click="emit('prev')">上一题</action-btn>
+        </div>
       </div>
     </div>
+    <action-btn class="r-btn" v-if="isLast" @click="$emit('complete')">查看推荐</action-btn>
   </div>
 </template>
 
@@ -36,6 +39,10 @@ export default defineComponent({
     qIndex: {
       type: Number,
       required: true
+    },
+    isLast: {
+      type: Boolean,
+      default: false
     }
   },
   setup (props, context) {
@@ -53,6 +60,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.full-page {
+  position: relative;
+  height: 100%;
+  .r-btn {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
 .question-container {
   padding: 10px;
   background-color: #fefefe;

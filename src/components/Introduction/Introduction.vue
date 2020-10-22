@@ -1,35 +1,37 @@
 <template>
-  <div class="device">
-    <img :src="deviceHeader" alt="" class="device-header">
-    <div class="device-container">
-      <div class="head-bar">
-        <van-icon name="arrow-left" size="25" />
-        <span class="head-tt">{{ config.title }}</span>
-      </div>
-      <div class="chat-container">
-        <div
-          v-for="(item, index) in config.list"
-          :key="index"
-          :class="['chat-item', item.align === 'right' ? 'right' : 'left']">
-          <div class="user-info">
-            <img :src="item.avatar" alt="aratar" class="avatar">
-          </div>
-          <div class="chat-content">
-            <div class="user-name">{{ item.name }}</div>
-            <div class="comment">
-              {{ item.text }}
+  <div class="full-page">
+    <div class="device">
+      <img :src="deviceHeader" alt="" class="device-header">
+      <div class="device-container">
+        <div class="head-bar">
+          <van-icon name="arrow-left" size="25" />
+          <span class="head-tt">{{ config.title }}</span>
+        </div>
+        <div class="chat-container">
+          <div
+            v-for="(item, index) in config.list"
+            :key="index"
+            :class="['chat-item', item.align === 'right' ? 'right' : 'left']">
+            <div class="user-info">
+              <img :src="item.avatar" alt="aratar" class="avatar">
+            </div>
+            <div class="chat-content">
+              <div class="user-name">{{ item.name }}</div>
+              <div class="comment">
+                {{ item.text }}
+              </div>
             </div>
           </div>
         </div>
+        <div class="action-bar">
+          <img :src="wxVoice" alt="wx-icon" class="wx-icon">
+          <div class="btn" @click="start">点击开始测试</div>
+          <img :src="wxFace" alt="wx-icon" class="wx-icon">
+          <img :src="wxAdd" alt="wx-icon" class="wx-icon">
+        </div>
       </div>
-      <div class="action-bar">
-        <img :src="wxVoice" alt="wx-icon" class="wx-icon">
-        <div class="btn" @click="start">点击开始测试</div>
-        <img :src="wxFace" alt="wx-icon" class="wx-icon">
-        <img :src="wxAdd" alt="wx-icon" class="wx-icon">
-      </div>
+      <img :src="deviceFooter" alt="" class="device-footer">
     </div>
-    <img :src="deviceFooter" alt="" class="device-footer">
   </div>
 </template>
 
@@ -69,10 +71,22 @@ export default defineComponent({
 
 <style scoped lang="scss">
 $device-color:  #a8dbe7;
+.full-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100%;
+  padding: 0 10vw;
+  box-sizing: border-box;
+}
 .device {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 5% 10vw;
+  width: 100%;
+  min-width: 240px;
+  max-width: 440px;
   .device-header,.device-footer {
     width: 100%;
   }

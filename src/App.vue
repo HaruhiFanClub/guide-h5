@@ -15,10 +15,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+html,body,#app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  line-height: 1.5em;
+}
 #app {
   margin: 0 auto;
-  // width: 100vw;
-  width: clamp(430px, 100vw, 580px);
-  line-height: 1.5em;
+  width: 100vw;
 }
 </style>

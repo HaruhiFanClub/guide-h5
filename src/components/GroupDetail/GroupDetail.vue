@@ -19,24 +19,15 @@
         </van-step>
       </van-steps>
     </div>
-    <div class="actions">
-      <!-- TODO: 粗略判断，需要优化 -->
-      <action-btn v-show="showTopBtn || info.parts.length < 6" class="action" @click="$emit('prev')">上一页</action-btn>
-      <action-btn v-show="showBottomBtn || info.parts.length < 6" class="action" @click="$emit('next')">下一页</action-btn>
-    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { TGroup } from '@/types'
-import { ActionBtn } from '../ActionBtn'
 
 export default defineComponent({
   name: 'GroupDetail',
-  components: {
-    ActionBtn
-  },
   props: {
     info: {
       type: Object as PropType<TGroup>
@@ -46,18 +37,6 @@ export default defineComponent({
     return {
       showTopBtn: false,
       showBottomBtn: false
-    }
-  },
-  mounted () {
-    this.initEvent()
-  },
-  methods: {
-    initEvent () {
-      const { $el: el } = this
-      el.addEventListener('scroll', () => {
-        this.showTopBtn = el.scrollTop === 0
-        this.showBottomBtn = el.scrollHeight - el.scrollTop === el.clientHeight
-      })
     }
   }
 })
@@ -98,18 +77,6 @@ export default defineComponent({
       font-size: 0.95rem;
       line-height: 150%;
       color: #585858;
-    }
-  }
-  .actions {
-    position: absolute;
-    bottom: 20%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 100%;
-    .action {
-      background-color: #fff;
-      opacity: 0.7;
     }
   }
 }
