@@ -19,7 +19,7 @@ export default defineComponent({
       default: ''
     }
   },
-  setup (props) {
+  setup () {
     let swiperScrollbar = {} as Swiper | Swiper[]
     onMounted(() => {
       swiperScrollbar = new Swiper('.swiper-container-scrollbar', {
@@ -36,11 +36,9 @@ export default defineComponent({
     const update = () => {
       if (swiperScrollbar instanceof Array) {
         swiperScrollbar.forEach(item => {
-          console.log('update多个', props.scrollKey, item)
           item.update()
         })
       } else {
-        console.log('update单个', props.scrollKey, swiperScrollbar)
         swiperScrollbar.update()
       }
     }

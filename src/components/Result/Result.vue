@@ -1,6 +1,6 @@
 <template>
   <div class="result" >
-    <div class="main-recommend" v-if="resultList.length">
+    <div class="main-recommend"  @click="join(resultList[0].joinLink)">
       <div class="border"></div>
       <div class="content">
         <img :src="resultList[0].logo" alt="" class="qr">
@@ -14,7 +14,7 @@
       <h4>其他推荐</h4>
       <template v-if="otherRecomment.length">
         <section v-for="item in otherRecomment" :key="item.name">
-          <div class="left">
+          <div class="left" @click="join(item.joinLink)">
             <span class="part-name">{{ item.name }}</span>
             <span class="part-introduction">{{ item.introduction }}</span>
           </div>
@@ -31,43 +31,17 @@ import { TGroup } from '@/types'
 
 export default defineComponent({
   name: 'Result',
+  inject: ['join'],
   props: {
     resultList: {
       type: Array as PropType<TGroup[]>,
       default: () => []
     }
   },
-  data () {
-    return {
-      showTopBtn: false,
-      showBottomBtn: false
-    }
-  },
   computed: {
     otherRecomment (): TGroup[] {
       const { resultList } = this
       return resultList.length > 1 ? resultList.slice(1) : []
-    }
-  },
-  watch: {
-    otherRecomment (val: TGroup[]) {
-      const isScroll = val.length >= 5 // TODO: 粗略判断，需要优化
-      this.$emit('show-prev', !isScroll)
-      this.$emit('show-next', !isScroll)
-    }
-  },
-  mounted () {
-    this.initEvent()
-  },
-  methods: {
-    initEvent () {
-      const { $el: el } = this
-      el.addEventListener('scroll', () => {
-        const isTop = el.scrollTop === 0
-        this.$emit('show-prev', isTop)
-        const isBottom = el.scrollHeight - el.scrollTop === el.clientHeight
-        this.$emit('show-next', isBottom)
-      })
     }
   }
 })
