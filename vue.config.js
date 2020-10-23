@@ -11,6 +11,7 @@ module.exports = {
   devServer: {
     port: 8888
   },
+  parallel: false,
   chainWebpack: config => {
     config.module
       .rule('ts')
