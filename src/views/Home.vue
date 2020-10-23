@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, nextTick } from 'vue'
+import { defineComponent, ref, nextTick, provide } from 'vue'
 import { INTRODUCTION_CONFIG, QUESTION_LIST, FACTOR_CONFIG, GROUP_LIST } from '@/config'
 import { Question as TQuestion, TGroup } from '@/types'
 import { Introduction } from '@/components/Introduction'
@@ -36,6 +36,8 @@ import { Result } from '@/components/Result'
 import { GroupList } from '@/components/GroupList'
 import { GroupDetail } from '@/components/GroupDetail'
 import { Swiper, SwiperItem } from '@/components/Swiper'
+
+const join = (link: string) => { location.href = link }
 
 export default defineComponent({
   name: 'Home',
@@ -49,6 +51,7 @@ export default defineComponent({
     GroupList
   },
   setup () {
+    provide('join', join)
     const questionList = QUESTION_LIST.map(item => {
       return {
         ...item,

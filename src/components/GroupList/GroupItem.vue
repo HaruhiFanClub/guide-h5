@@ -1,5 +1,5 @@
 <template>
-  <div class="group-item">
+  <div class="group-item" @click="join(info.joinLink)">
     <img :src="info.logo" alt="logo" class="logo">
     <div class="right">
       <h3>{{ info.name }}</h3>
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, inject } from 'vue'
 import { TGroup } from '@/types'
 
 export default defineComponent({
@@ -17,6 +17,11 @@ export default defineComponent({
   props: {
     info: {
       type: Object as PropType<TGroup>
+    }
+  },
+  setup () {
+    return {
+      join: inject('join')
     }
   }
 })

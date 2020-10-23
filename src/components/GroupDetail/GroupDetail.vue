@@ -1,42 +1,44 @@
 <template>
-  <div class="group-detail">
-    <div class="title">
-      <span>{{ info.name }}</span>
+    <div class="group-detail">
+      <div class="title">
+        <span>{{ info.name }}</span>
+      </div>
+      <div class="parts">
+        <van-steps direction="vertical" :active="0" :active-color="'#47c1a8'" :inactive-color="'#47c1a8'">
+          <van-step v-for="(part, index) in info.parts" :key="part">
+            <template #active-icon>
+              <span class="line-node">0{{ index + 1 }}</span>
+            </template>
+            <template #inactive-icon>
+              <span class="line-node">0{{ index + 1 }}</span>
+            </template>
+            <div class="part-content">
+              <div class="part-title">Part {{ index + 1 }}</div>
+              <p>{{ part }}</p>
+            </div>
+          </van-step>
+        </van-steps>
+      </div>
+      <div class="actions">
+        <action-btn class="join-btn" @click="join(info.joinLink)">加入我们</action-btn>
+      </div>
     </div>
-    <div class="parts">
-      <van-steps direction="vertical" :active="0" :active-color="'#47c1a8'" :inactive-color="'#47c1a8'">
-        <van-step v-for="(part, index) in info.parts" :key="part">
-          <template #active-icon>
-            <span class="line-node">0{{ index + 1 }}</span>
-          </template>
-          <template #inactive-icon>
-            <span class="line-node">0{{ index + 1 }}</span>
-          </template>
-          <div class="part-content">
-            <div class="part-title">Part {{ index + 1 }}</div>
-            <p>{{ part }}</p>
-          </div>
-        </van-step>
-      </van-steps>
-    </div>
-  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+import { ActionBtn } from '../ActionBtn'
 import { TGroup } from '@/types'
 
 export default defineComponent({
   name: 'GroupDetail',
+  components: {
+    ActionBtn
+  },
+  inject: ['join'],
   props: {
     info: {
       type: Object as PropType<TGroup>
-    }
-  },
-  data () {
-    return {
-      showTopBtn: false,
-      showBottomBtn: false
     }
   }
 })
@@ -78,6 +80,12 @@ export default defineComponent({
       line-height: 150%;
       color: #585858;
     }
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 30px;
   }
 }
 </style>
