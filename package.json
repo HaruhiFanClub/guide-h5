@@ -38,9 +38,6 @@
     "ts-import-plugin": "^1.6.6",
     "typescript": "~3.9.3"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
       "vue-cli-service lint",
