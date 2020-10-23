@@ -1,15 +1,18 @@
 <template>
   <Home />
+  <Bgm id="bgm" :size="36" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Home from './views/Home.vue'
+import Bgm from '@/components/Bgm'
 
 export default defineComponent({
   name: 'App',
   components: {
-    Home
+    Home,
+    Bgm
   }
 })
 </script>
@@ -24,5 +27,11 @@ html,body,#app {
 #app {
   margin: 0 auto;
   width: 100vw;
+}
+#bgm {
+  z-index: 99999;
+  position: fixed;
+  top: 10px;
+  right: 10px;
 }
 </style>
