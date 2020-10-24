@@ -1,4 +1,4 @@
-import Bgm from './Bgm'
+import Bgm from './Bgm.vue'
 
 export {
   Bgm
