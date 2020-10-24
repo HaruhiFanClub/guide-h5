@@ -1,6 +1,8 @@
 <template>
   <div class="group-item" @click="join(info.joinLink)">
-    <img :src="info.logo" alt="logo" class="logo">
+    <div class="logo">
+      <img :src="info.logo" alt="logo">
+    </div>
     <div class="right">
       <h3>{{ info.name }}</h3>
       <div class="text">{{ info.desc }}</div>
@@ -31,9 +33,15 @@ export default defineComponent({
 .group-item {
   display: flex;
   .logo {
+    display: flex;
     width: 4.5rem;
     height: 4.5rem;
     margin-right: 5px;
+    img {
+      flex: 1;
+      height: 100%;
+      width: auto;
+    }
   }
   .right {
     padding: 10px 20px;

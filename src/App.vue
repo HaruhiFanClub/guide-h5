@@ -1,10 +1,10 @@
 <template>
   <Home />
-  <Bgm id="bgm" :size="36" />
+  <Bgm id="bgm" v-model="disabled" :size="36" />
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import Home from './views/Home.vue'
 import Bgm from '@/components/Bgm'
 
@@ -13,6 +13,11 @@ export default defineComponent({
   components: {
     Home,
     Bgm
+  },
+  setup () {
+    return {
+      disabled: ref(false)
+    }
   }
 })
 </script>

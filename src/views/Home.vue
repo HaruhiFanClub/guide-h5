@@ -37,7 +37,9 @@ import { GroupList } from '@/components/GroupList'
 import { GroupDetail } from '@/components/GroupDetail'
 import { Swiper, SwiperItem } from '@/components/Swiper'
 
-const join = (link: string) => { location.href = link }
+const join = (link: string) => {
+  window.open(link, '_blank')
+}
 
 export default defineComponent({
   name: 'Home',
