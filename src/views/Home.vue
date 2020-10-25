@@ -25,7 +25,14 @@
         <group-list :list="groupList"></group-list>
       </swiper-item>
       <swiper-item :auto-scroll="true" v-for="item in groupList" :key="item.name">
-        <group-detail :info="item"></group-detail>
+        <div class="full-page group-detail">
+          <group-detail :info="item"></group-detail>
+          <div class="actions">
+            <action-btn class="btn" @click="join(item.joinLink)">加入我们</action-btn>
+            <action-btn v-if="showBackResultBtn" class="btn" @click="jumpResults">返回推荐列表</action-btn>
+            <action-btn v-else class="btn" @click="jumpGroups">返回部门列表</action-btn>
+          </div>
+        </div>
       </swiper-item>
     </Swiper>
   </div>
@@ -41,6 +48,7 @@ import { Result } from '@/components/Result'
 import { GroupList } from '@/components/GroupList'
 import { GroupDetail } from '@/components/GroupDetail'
 import { Swiper, SwiperItem } from '@/components/Swiper'
+import { ActionBtn } from '@/components/ActionBtn'
 
 const join = (link: string) => {
   window.open(link, '_blank')
@@ -55,7 +63,8 @@ export default defineComponent({
     Question,
     Result,
     GroupDetail,
-    GroupList
+    GroupList,
+    ActionBtn
   },
   setup () {
     provide('join', join)
@@ -72,6 +81,11 @@ export default defineComponent({
     const groupList = GROUP_LIST.filter(item => !item.top)
     const resultList = ref<TGroup[]>([])
     let factorConfig = JSON.parse(JSON.stringify(FACTOR_CONFIG))
+
+    // 部门详情是否显示"返回推荐列表"
+    const showBackResultBtn = computed(
+      () => resultList.value.length && (swipe.value.prevIndex === questionList.length + 1)
+    )
 
     // 翻页结束事件
     const onSwipeChange = (index: number) => {
@@ -125,7 +139,7 @@ export default defineComponent({
         swipe.value.next()
       })
     }
-
+    // 跳转到详情
     const jumpDetail = (qq: number) => {
       // console.log('qq:', qq)
       let index = groupList.findIndex(item => item.qq === qq) + 1
@@ -133,6 +147,17 @@ export default defineComponent({
       index += questionList.length // 问卷页数
       index += 1 // 结果页
       // console.log(index) // 实际跳转的index
+      swipe.value.jump(index)
+    }
+    // 跳转到推荐结果
+    const jumpResults = () => {
+      if (!resultList.value.length) return false
+      swipe.value.jump(questionList.length + 1)
+    }
+    // 跳转到部门列表
+    const jumpGroups = () => {
+      let index = questionList.length + 1
+      if (resultList.value.length) index++
       swipe.value.jump(index)
     }
     return {
@@ -147,7 +172,11 @@ export default defineComponent({
       onSwipeChange,
       initResults,
       jumpDetail,
-      allowTouchMove
+      jumpResults,
+      jumpGroups,
+      allowTouchMove,
+      join,
+      showBackResultBtn
     }
   }
 })
@@ -157,5 +186,13 @@ export default defineComponent({
 <style scoped lang="scss">
 .hello {
   height: 100%;
+}
+.full-page {
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 30px;
+  }
 }
 </style>

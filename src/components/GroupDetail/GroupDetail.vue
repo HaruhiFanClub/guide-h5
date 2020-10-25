@@ -19,23 +19,15 @@
           </van-step>
         </van-steps>
       </div>
-      <div class="actions">
-        <action-btn class="join-btn" @click="join(info.joinLink)">加入我们</action-btn>
-      </div>
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { ActionBtn } from '../ActionBtn'
 import { TGroup } from '@/types'
 
 export default defineComponent({
   name: 'GroupDetail',
-  components: {
-    ActionBtn
-  },
-  inject: ['join'],
   props: {
     info: {
       type: Object as PropType<TGroup>
@@ -80,12 +72,6 @@ export default defineComponent({
       line-height: 150%;
       color: #585858;
     }
-  }
-  .actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin-bottom: 30px;
   }
 }
 </style>

@@ -1,4 +1,4 @@
-import { DefineComponent, defineComponent, ref, onMounted, h, nextTick } from 'vue'
+import { DefineComponent, defineComponent, ref, onMounted, h, nextTick, computed } from 'vue'
 import { Swiper } from 'swiper/bundle'
 import 'swiper/swiper-bundle.css'
 import './index.scss'
@@ -9,6 +9,7 @@ interface SwiperComponent extends DefineComponent {
   update(): void;
   updateSlides(): void;
   jump(arg0: number): void;
+  prevIndex: number;
 }
 
 export default defineComponent({
@@ -54,7 +55,8 @@ export default defineComponent({
       prev,
       update,
       updateSlides,
-      jump
+      jump,
+      prevIndex: computed(() => swiperV.value.previousIndex)
     }
   },
   render () {
