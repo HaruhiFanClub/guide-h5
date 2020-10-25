@@ -120,10 +120,43 @@ $device-color:  #a8dbe7;
         display: flex;
         align-items: flex-start;
         padding: 10px 0;
+        .avatar {
+          width: 2rem;
+          height: 2rem;
+        }
+        .chat-content {
+          .user-name {
+            font-size: 80%;
+            color: #c9c9c9;
+          }
+          .comment {
+            position: relative;
+            padding: 5px 10px;
+            font-size: 80%;
+            color: #464646;
+            background-color: #fff;
+            border-radius: .5rem;
+            &::before {
+              position: absolute;
+              content: '';
+              width: 0;
+              height: 0;
+              top: 5px;
+            }
+          }
+        }
         &.left {
           padding-right: 20px;
           .chat-content {
             padding-left: 20px;
+            .comment {
+              &::before {
+                right: 100%;
+                border-top: 1px solid transparent;
+                border-right: 8px solid #fff;
+                border-bottom: 12px solid transparent;
+              }
+            }
           }
         }
         &.right {
@@ -136,25 +169,13 @@ $device-color:  #a8dbe7;
             }
             .comment {
               background-color: #9de2a6;
+              &::before {
+                left: 100%;
+                border-top: 1px solid transparent;
+                border-left: 8px solid #9de2a6;
+                border-bottom: 12px solid transparent;
+              }
             }
-          }
-        }
-        .avatar {
-          width: 2rem;
-          height: 2rem;
-        }
-        .chat-content {
-          // padding-left: 20px;
-          .user-name {
-            font-size: 80%;
-            color: #c9c9c9;
-          }
-          .comment {
-            padding: 5px 10px;
-            font-size: 80%;
-            color: #464646;
-            background-color: #fff;
-            border-radius: .5rem;
           }
         }
       }
