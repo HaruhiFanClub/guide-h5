@@ -1,26 +1,24 @@
 import { App } from 'vue'
 import {
-  Swipe,
-  SwipeItem,
   CheckboxGroup,
   Checkbox,
   RadioGroup,
   Radio,
   Step,
   Steps,
-  Icon
+  Icon,
+  Empty
 } from 'vant'
 
 export const vantComponents = [
-  Swipe,
-  SwipeItem,
   CheckboxGroup,
   Checkbox,
   RadioGroup,
   Radio,
   Step,
   Steps,
-  Icon
+  Icon,
+  Empty
 ]
 
 export const installVant = (app: App) => {

@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <Swiper ref="swipe" @change="onSwipeChange">
+    <Swiper ref="swipe" :allow-touch-move="allowTouchMove" @change="onSwipeChange">
       <swiper-item :no-swiping="true">
         <Introduction @start="swipe.next()" :config="INTRODUCTION_CONFIG" />
       </swiper-item>
@@ -13,8 +13,13 @@
           @complete="initResults"
           @prev="swipe.prev()" />
       </swiper-item>
-      <swiper-item ref="resultSwipe" :auto-scroll="true" :scroll-key="'result'" v-if="resultList.length">
-        <Result :result-list="resultList" />
+      <swiper-item
+        v-if="resultList.length"
+        ref="resultSwipe"
+        :auto-scroll="true"
+        :scroll-key="'result'"
+      >
+        <Result :result-list="resultList" @jump-detail="jumpDetail" @next="swipe.next()" />
       </swiper-item>
       <swiper-item ref="groupsSwipe" :auto-scroll="true">
         <group-list :list="groupList"></group-list>
@@ -27,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, nextTick, provide } from 'vue'
+import { defineComponent, ref, nextTick, provide, computed } from 'vue'
 import { INTRODUCTION_CONFIG, QUESTION_LIST, FACTOR_CONFIG, GROUP_LIST } from '@/config'
 import { Question as TQuestion, TGroup } from '@/types'
 import { Introduction } from '@/components/Introduction'
@@ -76,6 +81,8 @@ export default defineComponent({
         factorConfig = JSON.parse(JSON.stringify(FACTOR_CONFIG))
       }
     }
+    // 是否允许手势翻页
+    const allowTouchMove = computed(() => !(swipeIndex.value === 11 && resultList.value.length))
     // 计算得分
     const getScoreList = (queList: TQuestion[]): string[] => {
       let res: string[] = []
@@ -118,6 +125,16 @@ export default defineComponent({
         swipe.value.next()
       })
     }
+
+    const jumpDetail = (qq: number) => {
+      // console.log('qq:', qq)
+      let index = groupList.findIndex(item => item.qq === qq) + 1
+      index += 1 // 首屏
+      index += questionList.length // 问卷页数
+      index += 1 // 结果页
+      // console.log(index) // 实际跳转的index
+      swipe.value.jump(index)
+    }
     return {
       swipe,
       resultSwipe,
@@ -128,7 +145,9 @@ export default defineComponent({
       groupList,
       resultList,
       onSwipeChange,
-      initResults
+      initResults,
+      jumpDetail,
+      allowTouchMove
     }
   }
 })

@@ -1,6 +1,6 @@
 <template>
   <div class="result" >
-    <div class="main-recommend"  @click="join(resultList[0].joinLink)">
+    <div class="main-recommend" @click="$emit('jump-detail', resultList[0].qq)">
       <div class="border"></div>
       <div class="content">
         <img :src="resultList[0].logo" alt="" class="qr">
@@ -14,24 +14,31 @@
       <h4>其他推荐</h4>
       <template v-if="otherRecomment.length">
         <section v-for="item in otherRecomment" :key="item.name">
-          <div class="left" @click="join(item.joinLink)">
+          <div class="left" @click="$emit('jump-detail', item.qq)">
             <span class="part-name">{{ item.name }}</span>
             <span class="part-introduction">{{ item.introduction }}</span>
           </div>
           <img :src="item.logo" alt="头像" class="logo">
         </section>
       </template>
+      <template v-else>
+        <van-empty description="暂无其它推荐" />
+      </template>
+    </div>
+    <div class="actions">
+      <action-btn @click="$emit('next')">查看所有部门</action-btn>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+import { ActionBtn } from '../ActionBtn'
 import { TGroup } from '@/types'
 
 export default defineComponent({
   name: 'Result',
-  inject: ['join'],
+  components: { ActionBtn },
   props: {
     resultList: {
       type: Array as PropType<TGroup[]>,
@@ -132,6 +139,12 @@ $border-radius: 0.3rem;
         border-radius: 50%;
       }
     }
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 30px;
   }
 }
 </style>
