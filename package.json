@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "qrious": "^4.0.2",
     "register-service-worker": "^1.7.1",
     "swiper": "^6.3.3",
     "vant": "^3.0.0-beta.3",

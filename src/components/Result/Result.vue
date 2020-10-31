@@ -3,7 +3,10 @@
     <div class="main-recommend" @click="$emit('jump-detail', resultList[0].qq)">
       <div class="border"></div>
       <div class="content">
-        <img :src="resultList[0].logo" alt="" class="qr">
+        <div class="qr">
+          <img :src="resultList[0].logo" alt="" class="qr-logo">
+          <VueQrious :value="resultList[0].joinLink" class="qr-code" />
+        </div>
         <div class="right">
           <div class="group-title">{{ resultList[0].name }}</div>
           <div class="text">{{ resultList[0].comment }}</div>
@@ -34,11 +37,13 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { ActionBtn } from '../ActionBtn'
+import { VueQrious } from '../VueQrious'
 import { TGroup } from '@/types'
 
 export default defineComponent({
   name: 'Result',
-  components: { ActionBtn },
+  // eslint-disable-next-line
+  components: { ActionBtn, VueQrious },
   props: {
     resultList: {
       type: Array as PropType<TGroup[]>,
@@ -82,11 +87,27 @@ $border-radius: 0.3rem;
       border-radius: $border-radius;
       transform: translateY(8px);
       .qr {
+        position: relative;
         height: 7rem;
         width: 7rem;
+        padding: 5px;
+        background-color: #fff;
         border-radius: $border-radius;
+        .qr-code {
+          height: 100%;
+          width: 100%;
+        }
+        .qr-logo {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          height: 1.5rem;
+          width: 1.5rem;
+          transform: translate(-50%, -50%);
+        }
       }
       .right {
+        flex: 1;
         margin-left: 10px;
         padding: 0 20px 10px 0;
         .group-title {
@@ -97,7 +118,7 @@ $border-radius: 0.3rem;
           border-bottom: 1px solid #3e3e3e;
         }
         .text {
-          font-size: .95rem;
+          font-size: .9rem;
           color: #3e3e3e;
         }
       }
