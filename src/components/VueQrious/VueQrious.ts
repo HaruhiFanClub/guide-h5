@@ -1,11 +1,16 @@
 import QRious, { QRiousOptions } from 'qrious'
-import { defineComponent, h, reactive, watch, ref } from 'vue'
+import { DefineComponent, defineComponent, h, reactive, watch, ref } from 'vue'
 
 export const LEVELS = ['L', 'M', 'Q', 'H'] as const
 
 export type Level = typeof LEVELS[number]
 
+interface VueQrious extends DefineComponent {
+  dataUrl: string;
+}
+
 export default defineComponent({
+  name: 'VueQrious',
   props: {
     value: {
       type: String,
@@ -23,16 +28,19 @@ export default defineComponent({
     padding: Number,
     size: Number
   },
-  setup (props, context) {
+  setup (props) {
     const qrious = reactive(new QRious(props as QRiousOptions))
     const dataUrl = ref(qrious.toDataURL(props.mime))
     watch(props, val => {
       qrious.set(val as QRiousOptions)
       dataUrl.value = qrious.toDataURL(props.mime)
     })
-    return () => h('img', {
-      ...context.attrs,
-      src: dataUrl.value
+    return { dataUrl }
+  },
+  render () {
+    return h('img', {
+      ...this.$attrs,
+      src: this.dataUrl
     })
   }
-})
+}) as unknown as VueQrious

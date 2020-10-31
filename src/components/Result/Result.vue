@@ -1,11 +1,11 @@
 <template>
   <div class="result" >
-    <div class="main-recommend" @click="$emit('jump-detail', resultList[0].qq)">
+    <div class="main-recommend" @click="qrPreview">
       <div class="border"></div>
       <div class="content">
         <div class="qr">
           <img :src="resultList[0].logo" alt="" class="qr-logo">
-          <VueQrious :value="resultList[0].joinLink" class="qr-code" />
+          <VueQrious ref="qrRef" :value="resultList[0].joinLink" class="qr-code" />
         </div>
         <div class="right">
           <div class="group-title">{{ resultList[0].name }}</div>
@@ -35,14 +35,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType, ref } from 'vue'
 import { ActionBtn } from '../ActionBtn'
 import { VueQrious } from '../VueQrious'
 import { TGroup } from '@/types'
 
 export default defineComponent({
   name: 'Result',
-  // eslint-disable-next-line
   components: { ActionBtn, VueQrious },
   props: {
     resultList: {
@@ -50,10 +49,20 @@ export default defineComponent({
       default: () => []
     }
   },
-  computed: {
-    otherRecomment (): TGroup[] {
-      const { resultList } = this
-      return resultList.length > 1 ? resultList.slice(1) : []
+  setup (props) {
+    const otherRecomment = computed(() => {
+      return props.resultList.length > 1 ? props.resultList.slice(1) : []
+    })
+    return {
+      otherRecomment,
+      qrRef: ref({} as typeof VueQrious)
+    }
+  },
+  methods: {
+    qrPreview () {
+      this.$preview({
+        images: [this.qrRef.dataUrl]
+      })
     }
   }
 })

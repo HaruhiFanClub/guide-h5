@@ -7,7 +7,8 @@ import {
   Step,
   Steps,
   Icon,
-  Empty
+  Empty,
+  ImagePreview
 } from 'vant'
 
 export const vantComponents = [
@@ -25,4 +26,11 @@ export const installVant = (app: App) => {
   vantComponents.forEach(component => {
     app.use(component)
   })
+  app.config.globalProperties.$preview = ImagePreview
+}
+
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $preview: ImagePreview;
+  }
 }
