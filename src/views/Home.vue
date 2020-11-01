@@ -10,7 +10,7 @@
           :config="item"
           :q-index="index"
           :is-last="index === questionList.length - 1"
-          @complete="initResults"
+          @complete="onQuestionComplete"
           @prev="swipe.prev()" />
       </swiper-item>
       <swiper-item
@@ -40,8 +40,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, nextTick, provide, computed } from 'vue'
-import { INTRODUCTION_CONFIG, QUESTION_LIST, FACTOR_CONFIG, GROUP_LIST } from '@/config'
-import { Question as TQuestion, TGroup } from '@/types'
+import { INTRODUCTION_CONFIG } from '@/config'
 import { Introduction } from '@/components/Introduction'
 import { Question } from '@/components/Question'
 import { Result } from '@/components/Result'
@@ -49,6 +48,7 @@ import { GroupList } from '@/components/GroupList'
 import { GroupDetail } from '@/components/GroupDetail'
 import { Swiper, SwiperItem } from '@/components/Swiper'
 import { ActionBtn } from '@/components/ActionBtn'
+import { useQuestion } from '@/hooks'
 
 const join = (link: string) => {
   window.open(link, '_blank')
@@ -68,19 +68,11 @@ export default defineComponent({
   },
   setup () {
     provide('join', join)
-    const questionList = QUESTION_LIST.map(item => {
-      return {
-        ...item,
-        value: item.multiple ? [] : undefined
-      }
-    })
+    const { groupList, resultList, questionList, initResults, reset } = useQuestion()
     const swipeIndex = ref(0)
     const swipe = ref({} as typeof Swiper)
     const resultSwipe = ref({} as typeof SwiperItem)
     const groupsSwipe = ref({} as typeof SwiperItem)
-    const groupList = GROUP_LIST.filter(item => !item.top)
-    const resultList = ref<TGroup[]>([])
-    let factorConfig = JSON.parse(JSON.stringify(FACTOR_CONFIG))
 
     // 部门详情是否显示"返回推荐列表"
     const showBackResultBtn = computed(
@@ -90,47 +82,14 @@ export default defineComponent({
     // 翻页结束事件
     const onSwipeChange = (index: number) => {
       swipeIndex.value = index
-      if (index === questionList.length) {
-        resultList.value = []
-        factorConfig = JSON.parse(JSON.stringify(FACTOR_CONFIG))
-      }
+      if (index === questionList.length) reset()
     }
     // 是否允许手势翻页
     const allowTouchMove = computed(() => !(swipeIndex.value === 11 && resultList.value.length))
-    // 计算得分
-    const getScoreList = (queList: TQuestion[]): string[] => {
-      let res: string[] = []
-      queList.forEach(que => {
-        const { value } = que
-        if (!que.multiple) {
-          // 单选取值
-          if (value !== undefined && typeof value === 'number') {
-            res = res.concat(que.options[value].score)
-          }
-        } else {
-          // 多选取值
-          if (value instanceof Array && value.length) {
-            value.forEach(n => {
-              res = res.concat(que.options[n].score)
-            })
-          }
-        }
-      })
-      return res
-    }
 
     // 获取推荐列表
-    const initResults = () => {
-      resultList.value = []
-      const scoreList: string[] = getScoreList(questionList)
-      scoreList.forEach(key => {
-        factorConfig[key]++
-      })
-      resultList.value = GROUP_LIST.filter(item => {
-        return item.factor.some(n => {
-          return factorConfig[n] > 0
-        })
-      })
+    const onQuestionComplete = () => {
+      initResults()
       nextTick(() => {
         if (resultList.value.length) {
           resultSwipe.value.update()
@@ -166,11 +125,10 @@ export default defineComponent({
       groupsSwipe,
       INTRODUCTION_CONFIG,
       questionList,
-      swipeIndex,
       groupList,
       resultList,
       onSwipeChange,
-      initResults,
+      onQuestionComplete,
       jumpDetail,
       jumpResults,
       jumpGroups,
