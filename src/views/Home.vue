@@ -41,13 +41,7 @@
 <script lang="ts">
 import { defineComponent, ref, nextTick, provide, computed } from 'vue'
 import { INTRODUCTION_CONFIG } from '@/config'
-import { Introduction } from '@/components/Introduction'
-import { Question } from '@/components/Question'
-import { Result } from '@/components/Result'
-import { GroupList } from '@/components/GroupList'
-import { GroupDetail } from '@/components/GroupDetail'
 import { Swiper, SwiperItem } from '@/components/Swiper'
-import { ActionBtn } from '@/components/ActionBtn'
 import { useQuestion } from '@/hooks'
 
 const join = (link: string) => {
@@ -56,16 +50,6 @@ const join = (link: string) => {
 
 export default defineComponent({
   name: 'Home',
-  components: {
-    Swiper,
-    SwiperItem,
-    Introduction,
-    Question,
-    Result,
-    GroupDetail,
-    GroupList,
-    ActionBtn
-  },
   setup () {
     provide('join', join)
     const { groupList, resultList, questionList, initResults, reset } = useQuestion()
