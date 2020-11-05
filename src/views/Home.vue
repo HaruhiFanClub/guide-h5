@@ -21,7 +21,7 @@
       >
         <Result :result-list="resultList" @jump-detail="jumpDetail" @next="swipe.next()" />
       </swiper-item>
-      <swiper-item ref="groupsSwipe" :auto-scroll="true">
+      <swiper-item :auto-scroll="true">
         <group-list :list="groupList"></group-list>
       </swiper-item>
       <swiper-item :auto-scroll="true" v-for="item in groupList" :key="item.name">
@@ -39,10 +39,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, nextTick, provide, computed } from 'vue'
+import { defineComponent, nextTick, provide, computed } from 'vue'
 import { INTRODUCTION_CONFIG } from '@/config'
-import { Swiper, SwiperItem } from '@/components/Swiper'
-import { useQuestion } from '@/hooks'
+import { useQuestion, useSwipeRefs } from '@/hooks'
 
 const join = (link: string) => {
   window.open(link, '_blank')
@@ -53,11 +52,12 @@ export default defineComponent({
   setup () {
     provide('join', join)
     const { groupList, resultList, questionList, initResults, reset } = useQuestion()
-    const swipeIndex = ref(0)
-    const swipe = ref({} as typeof Swiper)
-    const resultSwipe = ref({} as typeof SwiperItem)
-    const groupsSwipe = ref({} as typeof SwiperItem)
+    const { swipe, swipeIndex, resultSwipe, setIndex, update, next, jump } = useSwipeRefs()
 
+    // 是否允许手势翻页
+    const allowTouchMove = computed(
+      () => !(swipeIndex.value === 11 && resultList.value.length)
+    )
     // 部门详情是否显示"返回推荐列表"
     const showBackResultBtn = computed(
       () => resultList.value.length && (swipe.value.prevIndex === questionList.length + 1)
@@ -65,21 +65,15 @@ export default defineComponent({
 
     // 翻页结束事件
     const onSwipeChange = (index: number) => {
-      swipeIndex.value = index
+      setIndex(index)
       if (index === questionList.length) reset()
     }
-    // 是否允许手势翻页
-    const allowTouchMove = computed(() => !(swipeIndex.value === 11 && resultList.value.length))
-
     // 获取推荐列表
     const onQuestionComplete = () => {
       initResults()
       nextTick(() => {
-        if (resultList.value.length) {
-          resultSwipe.value.update()
-          swipe.value.updateSlides()
-        }
-        swipe.value.next()
+        if (resultList.value.length) update()
+        next()
       })
     }
     // 跳转到详情
@@ -90,23 +84,22 @@ export default defineComponent({
       index += questionList.length // 问卷页数
       index += 1 // 结果页
       // console.log(index) // 实际跳转的index
-      swipe.value.jump(index)
+      jump(index)
     }
     // 跳转到推荐结果
     const jumpResults = () => {
       if (!resultList.value.length) return false
-      swipe.value.jump(questionList.length + 1)
+      jump(questionList.length + 1)
     }
     // 跳转到部门列表
     const jumpGroups = () => {
       let index = questionList.length + 1
       if (resultList.value.length) index++
-      swipe.value.jump(index)
+      jump(index)
     }
     return {
       swipe,
       resultSwipe,
-      groupsSwipe,
       INTRODUCTION_CONFIG,
       questionList,
       groupList,
