@@ -1,30 +1,36 @@
 import { App } from 'vue'
 import {
-  Swipe,
-  SwipeItem,
   CheckboxGroup,
   Checkbox,
   RadioGroup,
   Radio,
   Step,
   Steps,
-  Icon
+  Icon,
+  Empty,
+  ImagePreview
 } from 'vant'
 
 export const vantComponents = [
-  Swipe,
-  SwipeItem,
   CheckboxGroup,
   Checkbox,
   RadioGroup,
   Radio,
   Step,
   Steps,
-  Icon
+  Icon,
+  Empty
 ]
 
 export const installVant = (app: App) => {
   vantComponents.forEach(component => {
     app.use(component)
   })
+  app.config.globalProperties.$preview = ImagePreview
+}
+
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $preview: ImagePreview;
+  }
 }

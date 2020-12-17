@@ -1,10 +1,25 @@
-import { defineComponent, ref, onMounted, h } from 'vue'
+import { DefineComponent, defineComponent, ref, onMounted, h, nextTick, computed } from 'vue'
 import { Swiper } from 'swiper/bundle'
 import 'swiper/swiper-bundle.css'
 import './index.scss'
 
+interface SwiperComponent extends DefineComponent {
+  next(): void;
+  prev(): void;
+  update(): void;
+  updateSlides(): void;
+  jump(arg0: number): void;
+  prevIndex: number;
+}
+
 export default defineComponent({
   name: 'Swiper',
+  props: {
+    allowTouchMove: {
+      type: Boolean,
+      default: true
+    }
+  },
   setup (_, { emit }) {
     const swiperV = ref({} as Swiper)
     onMounted(() => {
@@ -13,6 +28,9 @@ export default defineComponent({
         on: {
           slideChangeTransitionEnd: e => {
             emit('change', e.activeIndex)
+            nextTick(() => {
+              swiperV.value.allowTouchMove = _.allowTouchMove
+            })
           }
         }
       })
@@ -29,11 +47,16 @@ export default defineComponent({
     const updateSlides = () => {
       swiperV.value.updateSlides()
     }
+    const jump = (i: number) => {
+      swiperV.value.slideTo(i)
+    }
     return {
       next,
       prev,
       update,
-      updateSlides
+      updateSlides,
+      jump,
+      prevIndex: computed(() => swiperV.value.previousIndex)
     }
   },
   render () {
@@ -46,4 +69,4 @@ export default defineComponent({
       </div>
     )
   }
-})
+}) as unknown as SwiperComponent

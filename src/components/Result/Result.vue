@@ -1,9 +1,12 @@
 <template>
   <div class="result" >
-    <div class="main-recommend"  @click="join(resultList[0].joinLink)">
+    <div class="main-recommend" @click="qrPreview">
       <div class="border"></div>
       <div class="content">
-        <img :src="resultList[0].logo" alt="" class="qr">
+        <div class="qr">
+          <img :src="resultList[0].logo" alt="" class="qr-logo">
+          <VueQrious ref="qrRef" :value="resultList[0].joinLink" class="qr-code" />
+        </div>
         <div class="right">
           <div class="group-title">{{ resultList[0].name }}</div>
           <div class="text">{{ resultList[0].comment }}</div>
@@ -14,34 +17,52 @@
       <h4>其他推荐</h4>
       <template v-if="otherRecomment.length">
         <section v-for="item in otherRecomment" :key="item.name">
-          <div class="left" @click="join(item.joinLink)">
+          <div class="left" @click="$emit('jump-detail', item.qq)">
             <span class="part-name">{{ item.name }}</span>
             <span class="part-introduction">{{ item.introduction }}</span>
           </div>
           <img :src="item.logo" alt="头像" class="logo">
         </section>
       </template>
+      <template v-else>
+        <van-empty description="暂无其它推荐" />
+      </template>
+    </div>
+    <div class="actions">
+      <action-btn @click="$emit('next')">查看所有部门</action-btn>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType, ref } from 'vue'
+import { ActionBtn } from '../ActionBtn'
+import { VueQrious } from '../VueQrious'
 import { TGroup } from '@/types'
 
 export default defineComponent({
   name: 'Result',
-  inject: ['join'],
+  components: { ActionBtn, VueQrious },
   props: {
     resultList: {
       type: Array as PropType<TGroup[]>,
       default: () => []
     }
   },
-  computed: {
-    otherRecomment (): TGroup[] {
-      const { resultList } = this
-      return resultList.length > 1 ? resultList.slice(1) : []
+  setup (props) {
+    const otherRecomment = computed(() => {
+      return props.resultList.length > 1 ? props.resultList.slice(1) : []
+    })
+    return {
+      otherRecomment,
+      qrRef: ref({} as typeof VueQrious)
+    }
+  },
+  methods: {
+    qrPreview () {
+      this.$preview({
+        images: [this.qrRef.dataUrl]
+      })
     }
   }
 })
@@ -75,11 +96,27 @@ $border-radius: 0.3rem;
       border-radius: $border-radius;
       transform: translateY(8px);
       .qr {
+        position: relative;
         height: 7rem;
         width: 7rem;
+        padding: 5px;
+        background-color: #fff;
         border-radius: $border-radius;
+        .qr-code {
+          height: 100%;
+          width: 100%;
+        }
+        .qr-logo {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          height: 1.5rem;
+          width: 1.5rem;
+          transform: translate(-50%, -50%);
+        }
       }
       .right {
+        flex: 1;
         margin-left: 10px;
         padding: 0 20px 10px 0;
         .group-title {
@@ -90,7 +127,7 @@ $border-radius: 0.3rem;
           border-bottom: 1px solid #3e3e3e;
         }
         .text {
-          font-size: .95rem;
+          font-size: .9rem;
           color: #3e3e3e;
         }
       }
@@ -132,6 +169,12 @@ $border-radius: 0.3rem;
         border-radius: 50%;
       }
     }
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 30px;
   }
 }
 </style>

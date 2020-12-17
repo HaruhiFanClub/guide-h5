@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <Swiper ref="swipe" @change="onSwipeChange">
+    <Swiper ref="swipe" :allow-touch-move="allowTouchMove" @change="onSwipeChange">
       <swiper-item :no-swiping="true">
         <Introduction @start="swipe.next()" :config="INTRODUCTION_CONFIG" />
       </swiper-item>
@@ -10,32 +10,38 @@
           :config="item"
           :q-index="index"
           :is-last="index === questionList.length - 1"
-          @complete="initResults"
+          @complete="onQuestionComplete"
           @prev="swipe.prev()" />
       </swiper-item>
-      <swiper-item ref="resultSwipe" :auto-scroll="true" :scroll-key="'result'" v-if="resultList.length">
-        <Result :result-list="resultList" />
+      <swiper-item
+        v-if="resultList.length"
+        ref="resultSwipe"
+        :auto-scroll="true"
+        :scroll-key="'result'"
+      >
+        <Result :result-list="resultList" @jump-detail="jumpDetail" @next="swipe.next()" />
       </swiper-item>
-      <swiper-item ref="groupsSwipe" :auto-scroll="true">
+      <swiper-item :auto-scroll="true">
         <group-list :list="groupList"></group-list>
       </swiper-item>
       <swiper-item :auto-scroll="true" v-for="item in groupList" :key="item.name">
-        <group-detail :info="item"></group-detail>
+        <div class="full-page group-detail">
+          <group-detail :info="item"></group-detail>
+          <div class="actions">
+            <action-btn class="btn" @click="join(item.joinLink)">加入我们</action-btn>
+            <action-btn v-if="showBackResultBtn" class="btn" @click="jumpResults">返回推荐列表</action-btn>
+            <action-btn v-else class="btn" @click="jumpGroups">返回部门列表</action-btn>
+          </div>
+        </div>
       </swiper-item>
     </Swiper>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, nextTick, provide } from 'vue'
-import { INTRODUCTION_CONFIG, QUESTION_LIST, FACTOR_CONFIG, GROUP_LIST } from '@/config'
-import { Question as TQuestion, TGroup } from '@/types'
-import { Introduction } from '@/components/Introduction'
-import { Question } from '@/components/Question'
-import { Result } from '@/components/Result'
-import { GroupList } from '@/components/GroupList'
-import { GroupDetail } from '@/components/GroupDetail'
-import { Swiper, SwiperItem } from '@/components/Swiper'
+import { defineComponent, nextTick, provide, computed } from 'vue'
+import { INTRODUCTION_CONFIG } from '@/config'
+import { useQuestion, useSwipeRefs } from '@/hooks'
 
 const join = (link: string) => {
   window.open(link, '_blank')
@@ -43,92 +49,69 @@ const join = (link: string) => {
 
 export default defineComponent({
   name: 'Home',
-  components: {
-    Swiper,
-    SwiperItem,
-    Introduction,
-    Question,
-    Result,
-    GroupDetail,
-    GroupList
-  },
   setup () {
     provide('join', join)
-    const questionList = QUESTION_LIST.map(item => {
-      return {
-        ...item,
-        value: item.multiple ? [] : undefined
-      }
-    })
-    const swipeIndex = ref(0)
-    const swipe = ref({} as typeof Swiper)
-    const resultSwipe = ref({} as typeof SwiperItem)
-    const groupsSwipe = ref({} as typeof SwiperItem)
-    const groupList = GROUP_LIST.filter(item => !item.top)
-    const resultList = ref<TGroup[]>([])
-    let factorConfig = JSON.parse(JSON.stringify(FACTOR_CONFIG))
+    const { groupList, resultList, questionList, initResults, reset } = useQuestion()
+    const { swipe, swipeIndex, resultSwipe, setIndex, update, next, jump } = useSwipeRefs()
+
+    // 是否允许手势翻页
+    const allowTouchMove = computed(
+      () => !(swipeIndex.value === 11 && resultList.value.length)
+    )
+    // 部门详情是否显示"返回推荐列表"
+    const showBackResultBtn = computed(
+      () => resultList.value.length && (swipe.value.prevIndex === questionList.length + 1)
+    )
 
     // 翻页结束事件
     const onSwipeChange = (index: number) => {
-      swipeIndex.value = index
-      if (index === questionList.length) {
-        resultList.value = []
-        factorConfig = JSON.parse(JSON.stringify(FACTOR_CONFIG))
-      }
+      setIndex(index)
+      if (index === questionList.length) reset()
     }
-    // 计算得分
-    const getScoreList = (queList: TQuestion[]): string[] => {
-      let res: string[] = []
-      queList.forEach(que => {
-        const { value } = que
-        if (!que.multiple) {
-          // 单选取值
-          if (value !== undefined && typeof value === 'number') {
-            res = res.concat(que.options[value].score)
-          }
-        } else {
-          // 多选取值
-          if (value instanceof Array && value.length) {
-            value.forEach(n => {
-              res = res.concat(que.options[n].score)
-            })
-          }
-        }
-      })
-      return res
-    }
-
     // 获取推荐列表
-    const initResults = () => {
-      resultList.value = []
-      const scoreList: string[] = getScoreList(questionList)
-      scoreList.forEach(key => {
-        factorConfig[key]++
-      })
-      resultList.value = GROUP_LIST.filter(item => {
-        return item.factor.some(n => {
-          return factorConfig[n] > 0
-        })
-      })
+    const onQuestionComplete = () => {
+      initResults()
       nextTick(() => {
-        if (resultList.value.length) {
-          resultSwipe.value.update()
-          swipe.value.updateSlides()
-        }
-        swipe.value.next()
+        if (resultList.value.length) update()
+        next()
       })
+    }
+    // 跳转到详情
+    const jumpDetail = (qq: number) => {
+      // console.log('qq:', qq)
+      let index = groupList.findIndex(item => item.qq === qq) + 1
+      index += 1 // 首屏
+      index += questionList.length // 问卷页数
+      index += 1 // 结果页
+      // console.log(index) // 实际跳转的index
+      jump(index)
+    }
+    // 跳转到推荐结果
+    const jumpResults = () => {
+      if (!resultList.value.length) return false
+      jump(questionList.length + 1)
+    }
+    // 跳转到部门列表
+    const jumpGroups = () => {
+      let index = questionList.length + 1
+      if (resultList.value.length) index++
+      jump(index)
     }
     return {
       swipe,
       resultSwipe,
-      groupsSwipe,
       INTRODUCTION_CONFIG,
       questionList,
-      swipeIndex,
       groupList,
       resultList,
       onSwipeChange,
-      initResults
+      onQuestionComplete,
+      jumpDetail,
+      jumpResults,
+      jumpGroups,
+      allowTouchMove,
+      join,
+      showBackResultBtn
     }
   }
 })
@@ -138,5 +121,13 @@ export default defineComponent({
 <style scoped lang="scss">
 .hello {
   height: 100%;
+}
+.full-page {
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 30px;
+  }
 }
 </style>
