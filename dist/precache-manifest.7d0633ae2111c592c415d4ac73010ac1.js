@@ -1,7 +1,7 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "47e0ddd6c6fa9ebf9740",
-    "url": "/css/app.e6cc3463.css"
+    "revision": "a039febbde2fcb27f2e1",
+    "url": "/css/app.873b5ddd.css"
   },
   {
     "revision": "1e8c72a32866b34ef25f",
@@ -24,12 +24,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/header.caa0b2cf.webp"
   },
   {
-    "revision": "3278f7cbbde93274d4d9beeef672376f",
-    "url": "/img/music.3278f7cb.svg"
+    "revision": "b5639d0910c9c1c077064cf2ba42e958",
+    "url": "/img/music.b5639d09.svg"
   },
   {
-    "revision": "2c2939e85bd91efb40f418370912fd17",
-    "url": "/img/mute.2c2939e8.svg"
+    "revision": "37a3271039bbfc23435e6337c53b4c6a",
+    "url": "/img/mute.37a32710.svg"
   },
   {
     "revision": "eefef2c598681536349391608678dd2e",
@@ -76,12 +76,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/音乐部.22c9175f.jpg"
   },
   {
-    "revision": "ed2ece2be17bbfc18ac20bb489a40d8e",
+    "revision": "cb77547fc2c2d88b3f3ac9c8401fd743",
     "url": "/index.html"
   },
   {
-    "revision": "47e0ddd6c6fa9ebf9740",
-    "url": "/js/app.411d15ea.js"
+    "revision": "a039febbde2fcb27f2e1",
+    "url": "/js/app.b5924c93.js"
   },
   {
     "revision": "1e8c72a32866b34ef25f",
@@ -96,7 +96,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/media/bgm.bc6ce7fc.mp3"
   },
   {
-    "revision": "735ab4f94fbcd57074377afca324c813",
+    "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
     "url": "/robots.txt"
   }
 ]);
