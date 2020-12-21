@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "a039febbde2fcb27f2e1",
-    "url": "/css/app.873b5ddd.css"
+    "revision": "1c094acf1de2eb9f156a",
+    "url": "/css/app.8d869ddf.css"
   },
   {
-    "revision": "1e8c72a32866b34ef25f",
+    "revision": "5646b10c0d3fb4717ddb",
     "url": "/css/chunk-vendors.1f17a45a.css"
   },
   {
@@ -52,10 +52,6 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/日本支部.6236ddba.jpg"
   },
   {
-    "revision": "a902427753295868e38bc4fb31797ec8",
-    "url": "/img/活动部.a9024277.jpg"
-  },
-  {
     "revision": "fbc6061bcfb26e0d67fe7ae2019de505",
     "url": "/img/游戏制作交流群.fbc6061b.jpg"
   },
@@ -76,16 +72,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/音乐部.22c9175f.jpg"
   },
   {
-    "revision": "cb77547fc2c2d88b3f3ac9c8401fd743",
+    "revision": "062bc8315fe72eb5816e8ef0e955bae8",
     "url": "/index.html"
   },
   {
-    "revision": "a039febbde2fcb27f2e1",
-    "url": "/js/app.b5924c93.js"
+    "revision": "1c094acf1de2eb9f156a",
+    "url": "/js/app.fb45ac5d.js"
   },
   {
-    "revision": "1e8c72a32866b34ef25f",
-    "url": "/js/chunk-vendors.5a099a13.js"
+    "revision": "5646b10c0d3fb4717ddb",
+    "url": "/js/chunk-vendors.eef44780.js"
   },
   {
     "revision": "12cc0f59a73b864c2f76d3d83f68e8cb",
