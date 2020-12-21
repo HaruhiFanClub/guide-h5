@@ -11,6 +11,7 @@
           :q-index="index"
           :is-last="index === questionList.length - 1"
           @complete="onQuestionComplete"
+          @next="swipe.next()"
           @prev="swipe.prev()" />
       </swiper-item>
       <swiper-item
@@ -22,7 +23,7 @@
         <Result :result-list="resultList" @jump-detail="jumpDetail" @next="swipe.next()" />
       </swiper-item>
       <swiper-item :auto-scroll="true">
-        <group-list :list="groupList"></group-list>
+        <group-list :list="groupList" @jump-detail="jumpDetail"></group-list>
       </swiper-item>
       <swiper-item :auto-scroll="true" v-for="item in groupList" :key="item.name">
         <div class="full-page group-detail">
@@ -82,7 +83,7 @@ export default defineComponent({
       let index = groupList.findIndex(item => item.qq === qq) + 1
       index += 1 // 首屏
       index += questionList.length // 问卷页数
-      index += 1 // 结果页
+      if (resultList.value.length) index += 1 // 结果页
       // console.log(index) // 实际跳转的index
       jump(index)
     }

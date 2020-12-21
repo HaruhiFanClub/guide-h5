@@ -1,6 +1,12 @@
 <template>
   <div class="group-list">
-    <group-item class="item" v-for="(item, index) in list" :key="index" :info="item"></group-item>
+    <group-item
+      class="item"
+      v-for="(item, index) in list"
+      :key="index"
+      :info="item"
+      @click="$emit('jump-detail', item.qq)">
+    </group-item>
     <action-btn v-show="showTopBtn" class="action" @click="$emit('prev')">返回结果页面</action-btn>
     <action-btn v-show="showBottomBtn" class="action" @click="$emit('next')">部门详情</action-btn>
   </div>

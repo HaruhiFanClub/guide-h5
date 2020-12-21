@@ -16,8 +16,8 @@
     <div class="recommend-list">
       <h4>其他推荐</h4>
       <template v-if="otherRecomment.length">
-        <section v-for="item in otherRecomment" :key="item.name">
-          <div class="left" @click="$emit('jump-detail', item.qq)">
+        <section v-for="item in otherRecomment" :key="item.name" @click="$emit('jump-detail', item.qq)">
+          <div class="left">
             <span class="part-name">{{ item.name }}</span>
             <span class="part-introduction">{{ item.introduction }}</span>
           </div>

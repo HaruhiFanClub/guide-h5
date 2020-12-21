@@ -12,6 +12,7 @@
         </van-radio-group>
         <div class="actions">
           <action-btn v-if="qIndex" @click="emit('prev')">上一题</action-btn>
+          <action-btn v-if="!isLast" @click="emit('next')">下一题</action-btn>
         </div>
       </div>
     </div>
@@ -90,7 +91,8 @@ export default defineComponent({
       position: absolute;
       width: 100%;
       bottom: 30px;
-      text-align: center;
+      display: flex;
+      justify-content: space-around;
     }
   }
 }
