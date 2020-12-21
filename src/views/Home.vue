@@ -11,6 +11,7 @@
           :q-index="index"
           :is-last="index === questionList.length - 1"
           @complete="onQuestionComplete"
+          @next="swipe.next()"
           @prev="swipe.prev()" />
       </swiper-item>
       <swiper-item
