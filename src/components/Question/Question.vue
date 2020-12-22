@@ -66,7 +66,7 @@ export default defineComponent({
   height: 100%;
   .r-btn {
     position: absolute;
-    bottom: 20%;
+    bottom: 10%;
     left: 50%;
     transform: translateX(-50%);
   }
