@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.8f4521d5f274f218d19536be1ee226a1.js"
+  "/precache-manifest.c6f04f5e7f925a220c28d9c19a5fbcc8.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "guide-h5"});
