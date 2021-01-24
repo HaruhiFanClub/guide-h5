@@ -217,8 +217,8 @@ export const GROUP_LIST: TGroup[] = [
   {
     name: '电研社',
     logo: dys,
-    qq: 891832363,
-    joinLink: 'https://jq.qq.com/?_wv=1027&k=5mEKjpv',
+    qq: 1065730406,
+    joinLink: 'https://jq.qq.com/?_wv=1027&k=YzlZ3fVO',
     factor: ['开发力'],
     comment: '欢迎加入电研社，一同交流计算机技术！无论大佬还是新人，都能在这里找到同伴哦~',
     introduction: '进群领取学姐福利（x），一起交流计算机技术吧！',
